@@ -4,16 +4,23 @@ var {buildSchema} = require('graphql');
 
 // GraphQL Schema
 //the return type of message is  a string
-var schema = buildSchema(`
-type Query{
-    message: String     
-}
+const schema = buildSchema(`
+  type Book {
+    title: String
+    author: String
+  }
+
+  type Query {
+    getBook: Book
+  }
 `);
 
 // Implement a resolver which we can attch a function which is called every time the schema needs to be executed to access a query
-var root = {
-    message: () => 'Hello World!'
-};
+const root = {
+    getBook: () => {
+      return { title: 'Sample Book', author: 'John Doe' };
+    },
+  };
 
 // Setting up the express server and attach a GraphQL endpoint to the server
 var app = express();
@@ -24,4 +31,4 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 // start up server
-app.listen(4000, () => console.log('Express GraphQL Server Now Running On localhost:4000/graphql'));
+app.listen(4001, () => console.log('Express GraphQL Server Now Running On localhost:4001/graphql'));
